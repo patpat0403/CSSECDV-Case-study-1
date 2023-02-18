@@ -259,7 +259,7 @@ public class Frame extends javax.swing.JFrame {
     
     public void registerAction(String username, String password, String confpass){
         if(main.verify(username, password, confpass)== 1)
-             JOptionPane.showMessageDialog(null,"Password length must be at least 11 characters");
+             this.showError("minimum characters for password must be at least 11");
         else
         {
             main.sqlite.addUser(username, password);

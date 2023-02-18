@@ -102,13 +102,16 @@ public class Main {
         
         // Initialize User Interface
         Frame frame = new Frame();
+        
         frame.init(this);
     }
     
     public int verify(String username, String password, String confpass)
     {
+        
         if (username.length()<11)
         {
+            
             return 1;
         }
         
