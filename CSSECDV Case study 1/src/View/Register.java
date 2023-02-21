@@ -100,7 +100,7 @@ public class Register extends javax.swing.JPanel {
        
         
         
-          frame.registerAction(usernameFld.getText(), passwordFld.getText(), confpassFld.getText());
+          frame.registerAction(usernameFld, passwordFld, confpassFld);
           
         
     }//GEN-LAST:event_registerBtnActionPerformed

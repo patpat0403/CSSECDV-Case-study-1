@@ -1,6 +1,7 @@
 package View;
 
 import Controller.Main;
+import Model.User;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Dimension;
@@ -8,6 +9,8 @@ import javax.swing.WindowConstants;
 import javax.swing.JOptionPane;
 
 public class Frame extends javax.swing.JFrame {
+    
+    public int invalidAttempts=0;
 
     public Frame() {
         initComponents();
@@ -257,15 +260,38 @@ public class Frame extends javax.swing.JFrame {
         frameView.show(Container, "registerPnl");
     }
     
-    public void registerAction(String username, String password, String confpass){
-        if(main.verify(username, password, confpass)== 1)
+    public void registerAction(javax.swing.JTextField  username, javax.swing.JTextField  password, javax.swing.JTextField confpass){
+        if(main.verifyRegister(username.getText(), password.getText(), confpass.getText())== 1)
              this.showError("minimum characters for password must be at least 11");
         else
         {
-            main.sqlite.addUser(username, password);
+            main.sqlite.addUser(username.getText(), password.getText(),2);
             this.loginNav();
         }
         
+    }
+    
+    public void loginAction(javax.swing.JTextField username, javax.swing.JTextField password)
+    {  
+        
+        if (main.verifyLogin(username.getText(), password.getText())==1 ||main.verifyLogin(username.getText(), password.getText())==2 )
+      {
+        showError("Invalid user or password or you are trying to access a locked account");
+        if(main.verifyLogin(username.getText(), password.getText())==2)
+        {
+            this.invalidAttempts+=1;
+        }
+    
+       }
+    
+       else
+       {
+        this.invalidAttempts=0;
+        username.setText("");
+        password.setText("");
+        this.mainNav();
+        
+       }
     }
     
     public void showError(String error)

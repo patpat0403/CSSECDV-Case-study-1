@@ -106,7 +106,7 @@ public class Main {
         frame.init(this);
     }
     
-    public int verify(String username, String password, String confpass)
+    public int verifyRegister(String username, String password, String confpass)
     {
         
         if (username.length()<11)
@@ -117,6 +117,42 @@ public class Main {
         
         else
             return 0;
+    }
+    
+    public int verifyLogin(String username, String password)
+    {
+         ArrayList<User> users = sqlite.getUsers();
+         int invalid = 1;
+          for(int nCtr = 0; nCtr < users.size(); nCtr++)
+          {
+              if (username.equals("")|| password.equals(""))//check for blank text fields
+              {
+                  System.out.println("Empty field");
+                  return invalid= 1;
+              }
+                  
+              else if (username.equalsIgnoreCase(users.get(nCtr).getUsername()))
+              {
+                  if (users.get(nCtr).getRole()== 1)// check if account is locked
+                  {
+                      System.out.println("Locked user");
+                      return invalid= 1;
+                  }
+                      
+                  else if(!(password.equals(users.get(nCtr).getPassword())))
+                  {
+                     System.out.println("wrong password");
+                     return invalid =  2;  
+                  }
+                     
+                  else
+                      return 0;
+                  
+              }
+            
+          }
+         
+          return invalid;
     }
     
 }
