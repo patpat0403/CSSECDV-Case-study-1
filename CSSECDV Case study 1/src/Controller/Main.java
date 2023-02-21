@@ -9,12 +9,14 @@ import View.Frame;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.regex.*;
 
 
 
 public class Main {
     
     public SQLite sqlite;
+    private static final Pattern password_pattern= Pattern.compile( "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$");
     
     public static void main(String[] args) {
         new Main().init();
@@ -106,17 +108,39 @@ public class Main {
         frame.init(this);
     }
     
+    public boolean passMatcher(String password)
+    {
+        Matcher matcher= password_pattern.matcher(password);
+        
+        return matcher.matches();
+    }
+    
     public int verifyRegister(String username, String password, String confpass)
     {
         
-        if (username.length()<11)
+        if (password.length()<11)
         {
-            
+            System.out.println("Password too short");
+            return 1;
+        }
+        
+        else if (!passMatcher(password))
+        {
+            System.out.println("Password too simple");
+            return 1;
+        }
+        
+        else if(!(password.equals(confpass)))
+        {
+            System.out.println("Password not matching  ");
             return 1;
         }
         
         else
+        {
             return 0;
+        }
+            
     }
     
     public int verifyLogin(String username, String password)

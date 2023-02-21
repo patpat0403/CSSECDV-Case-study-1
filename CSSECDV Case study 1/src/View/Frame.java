@@ -266,6 +266,9 @@ public class Frame extends javax.swing.JFrame {
         else
         {
             main.sqlite.addUser(username.getText(), password.getText(),2);
+            username.setText("");
+            password.setText("");
+            confpass.setText("");
             this.loginNav();
         }
         
@@ -279,6 +282,8 @@ public class Frame extends javax.swing.JFrame {
         showError("Invalid user or password or you are trying to access a locked account");
         if(main.verifyLogin(username.getText(), password.getText())==2)
         {
+            //TODO: add code later to lock account
+            //if(this.invalidAttempts==5)
             this.invalidAttempts+=1;
         }
     
