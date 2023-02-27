@@ -124,7 +124,7 @@ public class Main {
             return 1;
         }
         
-        else if (!passMatcher(password))
+        else if (!passMatcher(password))//Passord not matching regex for password  complexity
         {
             System.out.println("Password too simple");
             return 1;
@@ -138,6 +138,8 @@ public class Main {
         
         else
         {
+            //TODO: check database if username exists , check for case insensitivity and if unique
+            
             return 0;
         }
             

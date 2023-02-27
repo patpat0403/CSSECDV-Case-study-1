@@ -320,11 +320,7 @@ public class SQLite {
     
     
       public void lockUser(String username){
-        String sql = "UPDATE users "
-                + "SET role = 1, "
-                + "locked = 1 "
-                + "WHERE username = '" + username 
-                + "';";
+        String sql = "UPDATE users " + "SET role = 1, " + "locked = 1 " + "WHERE username = '" + username + "';";
         
         try (Connection conn = DriverManager.getConnection(driverURL);
             Statement stmt = conn.createStatement()){

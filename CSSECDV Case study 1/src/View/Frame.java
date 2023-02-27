@@ -284,7 +284,9 @@ public class Frame extends javax.swing.JFrame {
         {
             //TODO: add code later to lock account
             //if(this.invalidAttempts==5)
+            
             this.invalidAttempts+=1;
+            System.out.println(this.invalidAttempts);
         }
     
        }
