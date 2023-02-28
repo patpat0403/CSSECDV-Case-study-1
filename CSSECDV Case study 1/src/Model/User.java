@@ -6,6 +6,7 @@ public class User {
     private String password;
     private int role = 2;
     private int locked = 0;
+    // TODO: attempts here
 
     public User(String username, String password){
         this.username = username;

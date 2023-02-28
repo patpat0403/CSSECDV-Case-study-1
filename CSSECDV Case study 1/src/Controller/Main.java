@@ -138,8 +138,17 @@ public class Main {
         
         else
         {
+            ArrayList<User> users = sqlite.getUsers();
             //TODO: check database if username exists , check for case insensitivity and if unique
-            
+            for(int nCtr = 0; nCtr < users.size(); nCtr++)
+            {
+                if(username.equalsIgnoreCase(users.get(nCtr).getUsername()))
+                     {
+                        System.out.println("Username exists");
+                        return 1;
+                     }
+            }
+             
             return 0;
         }
             
@@ -173,11 +182,7 @@ public class Main {
                      
                   else
                   { 
-                     if(username.equalsIgnoreCase(users.get(nCtr).getUsername()))
-                     {
-                        System.out.println("Username exists");
-                        return 1;
-                     }
+                    
 
                      return 0;
                   }

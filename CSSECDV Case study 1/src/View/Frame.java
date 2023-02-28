@@ -265,7 +265,7 @@ public class Frame extends javax.swing.JFrame {
              this.showError("minimum characters for password must be at least 11");
         else
         {
-            main.sqlite.addUser(username.getText(), password.getText(),2);
+            main.sqlite.addUser(username.getText().toLowerCase(), password.getText(),2);
             username.setText("");
             password.setText("");
             confpass.setText("");
@@ -287,6 +287,14 @@ public class Frame extends javax.swing.JFrame {
             
             this.invalidAttempts+=1;
             System.out.println(this.invalidAttempts);
+            
+            if (this.invalidAttempts==3)
+            {
+                 showError("Your account has been locked for multiple invalid attempts");
+                 main.sqlite.lockUser(username.getText().toLowerCase());
+                 this.invalidAttempts=0;
+                
+            }
         }
     
        }
