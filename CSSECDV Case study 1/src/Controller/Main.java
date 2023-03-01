@@ -17,7 +17,7 @@ import java.nio.charset.StandardCharsets;
 public class Main {
     
     public SQLite sqlite;
-    private static final Pattern password_pattern= Pattern.compile( "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$");
+    private static final Pattern password_pattern= Pattern.compile( "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{11,64}$");
     
     public static void main(String[] args) {
         new Main().init();
