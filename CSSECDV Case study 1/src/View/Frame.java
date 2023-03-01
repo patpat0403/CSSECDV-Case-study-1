@@ -285,13 +285,12 @@ public class Frame extends javax.swing.JFrame {
         
         if(main.verifyLogin(username.getText(), password.getText())==2)
         {
-            //TODO: add code later to lock account
-            //if(this.invalidAttempts==5)
+            
             
             this.invalidAttempts+=1;
             System.out.println(this.invalidAttempts);
             
-            if (this.invalidAttempts==3)
+            if (this.invalidAttempts==5)
             {
                  showError("Your account has been locked for multiple invalid attempts");
                  main.sqlite.lockUser(username.getText().toLowerCase());
