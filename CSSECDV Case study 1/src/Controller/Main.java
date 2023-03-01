@@ -10,8 +10,9 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.regex.*;
-
-
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.nio.charset.StandardCharsets;
 
 public class Main {
     
@@ -115,6 +116,29 @@ public class Main {
         return matcher.matches();
     }
     
+    public String generateHashedPassword(String password)
+    {
+        String generatedPassword= null;
+        try {
+                MessageDigest md = MessageDigest.getInstance("SHA-512");
+                md.update(password.getBytes());
+
+                byte[] hashedPassword = md.digest(password.getBytes(StandardCharsets.UTF_8));
+
+                /* The bytes array has bytes in decimal form. Converting it into hexadecimal format. */
+                StringBuilder s = new StringBuilder();
+                for (int i = 0; i < hashedPassword.length; i++) {
+                    s.append(Integer.toString((hashedPassword[i] & 0xff) + 0x100, 16).substring(1));
+                }
+
+                generatedPassword = s.toString();
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            }
+        
+        return generatedPassword;
+    }
+    
     public int verifyRegister(String username, String password, String confpass)
     {
         
@@ -173,7 +197,7 @@ public class Main {
                       System.out.println("Locked user");
                       return invalid= 1;
                   }
-                      
+                  //TODO check if hashedpassword is the same    
                   else if(!(password.equals(users.get(nCtr).getPassword())))
                   {
                      System.out.println("wrong password");

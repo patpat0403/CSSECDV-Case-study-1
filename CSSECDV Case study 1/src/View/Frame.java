@@ -262,9 +262,10 @@ public class Frame extends javax.swing.JFrame {
     
     public void registerAction(javax.swing.JTextField  username, javax.swing.JTextField  password, javax.swing.JTextField confpass){
         if(main.verifyRegister(username.getText(), password.getText(), confpass.getText())== 1)
-             this.showError("minimum characters for password must be at least 11");
+             this.showError("Registration failed: Invalid username or password");
         else
         {
+            //TODO add the hashing function for the password
             main.sqlite.addUser(username.getText().toLowerCase(), password.getText(),2);
             username.setText("");
             password.setText("");
@@ -279,7 +280,9 @@ public class Frame extends javax.swing.JFrame {
         
         if (main.verifyLogin(username.getText(), password.getText())==1 ||main.verifyLogin(username.getText(), password.getText())==2 )
       {
+          
         showError("Invalid user or password or you are trying to access a locked account");
+        
         if(main.verifyLogin(username.getText(), password.getText())==2)
         {
             //TODO: add code later to lock account
