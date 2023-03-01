@@ -34,13 +34,13 @@ public class Main {
 //        sqlite.dropHistoryTable();
 //        sqlite.dropLogsTable();
 //        sqlite.dropProductTable();
-//       sqlite.dropUserTable();
+ //      sqlite.dropUserTable();
 //        
 //        // Create users table if not exist
 //        sqlite.createHistoryTable();
 //        sqlite.createLogsTable();
 //        sqlite.createProductTable();
- //      sqlite.createUserTable();
+ //     sqlite.createUserTable();
 //        
 //        // Add sample history
 //        sqlite.addHistory("admin", "Antivirus", 1, "2019-04-03 14:30:00.000");
@@ -58,11 +58,11 @@ public class Main {
 //        sqlite.addProduct("Scanner", 10, 100.0);
 //
 //        // Add sample users
- //     sqlite.addUser("admin", "qwerty1234" , 5);
- //     sqlite.addUser("manager", "qwerty1234", 4);
- //       sqlite.addUser("staff", "qwerty1234", 3);
- //      sqlite.addUser("client1", "qwerty1234", 2);
- //      sqlite.addUser("client2", "qwerty1234", 2);
+ //     sqlite.addUser("admin", this.generateHashedPassword("qwerty1234") , 5);
+ //     sqlite.addUser("manager", this.generateHashedPassword("qwerty1234"), 4);
+ //       sqlite.addUser("staff", this.generateHashedPassword("qwerty1234"), 3);
+ //    sqlite.addUser("client1", this.generateHashedPassword("qwerty1234"), 2);
+ //      sqlite.addUser("client2", this.generateHashedPassword("qwerty1234"), 2);
 //        
 //        
 //        // Get users
@@ -125,7 +125,7 @@ public class Main {
 
                 byte[] hashedPassword = md.digest(password.getBytes(StandardCharsets.UTF_8));
 
-                /* The bytes array has bytes in decimal form. Converting it into hexadecimal format. */
+                
                 StringBuilder s = new StringBuilder();
                 for (int i = 0; i < hashedPassword.length; i++) {
                     s.append(Integer.toString((hashedPassword[i] & 0xff) + 0x100, 16).substring(1));
@@ -198,9 +198,9 @@ public class Main {
                       return invalid= 1;
                   }
                   //TODO check if hashedpassword is the same    
-                  else if(!(password.equals(users.get(nCtr).getPassword())))
+                  else if(!(this.generateHashedPassword(password).equals(users.get(nCtr).getPassword())))
                   {
-                     System.out.println("wrong password");
+                     System.out.println("Wrong password");
                      return invalid =  2;  
                   }
                      
