@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 public class Frame extends javax.swing.JFrame {
     
     public int invalidAttempts=0;
+    public User activeUser= null;
 
     public Frame() {
         initComponents();
@@ -205,6 +206,9 @@ public class Frame extends javax.swing.JFrame {
 
     private void logoutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutBtnActionPerformed
         frameView.show(Container, "loginPnl");
+        //TODO: remove panels depending on the role of the user
+        this.activeUser= null;
+        
     }//GEN-LAST:event_logoutBtnActionPerformed
 
     public Main main;
@@ -245,6 +249,17 @@ public class Frame extends javax.swing.JFrame {
         Content.add(staffHomePnl, "staffHomePnl");
         Content.add(clientHomePnl, "clientHomePnl");
         
+        //by default set to client
+        clientHomePnl.showPnl("home");
+        contentView.show(Content, "clientHomePnl");
+        
+        this.adminBtn.setVisible(false);
+        this.staffBtn.setVisible(false);
+        this.managerBtn.setVisible(false);
+        
+        
+       
+        
         this.setVisible(true);
     }
     
@@ -270,18 +285,19 @@ public class Frame extends javax.swing.JFrame {
             username.setText("");
             password.setText("");
             confpass.setText("");
+            //TODO add panels depending on the user
             this.loginNav();
         }
         
     }
     
     public void loginAction(javax.swing.JTextField username, javax.swing.JTextField password)
-    {  
+    {   
         
         if (main.verifyLogin(username.getText(), password.getText())==1 ||main.verifyLogin(username.getText(), password.getText())==2 )
       {
           
-        showError("Invalid user or password or you are trying to access a locked account");
+        showError("Login failed! : Invalid username or password ");
         
         if(main.verifyLogin(username.getText(), password.getText())==2)
         {
@@ -303,12 +319,81 @@ public class Frame extends javax.swing.JFrame {
     
        else
        {
+        String user = username.getText();
+        
+        
         this.invalidAttempts=0;
         username.setText("");
         password.setText("");
+        this.authenticateUI(main.getActive(user));
+        this.activeUser=main.getActive(user);
         this.mainNav();
         
        }
+    }
+    
+    public void authenticateUI(User user)
+    {
+        //admin
+        if (user.getRole()==5)
+        {
+            //disable all buttons that are not the resspective role
+            this.staffBtn.setVisible(false);
+            this.managerBtn.setVisible(false);
+            this.clientBtn.setVisible(false);
+            
+            
+           
+           
+            adminHomePnl.showPnl("home");
+            contentView.show(Content, "adminHomePnl");
+            this.adminBtn.setVisible(true);
+            
+            
+           
+        }
+        //manager
+        else if(user.getRole()==4)
+        {
+            this.staffBtn.setVisible(false);
+            this.adminBtn.setVisible(false);
+            this.clientBtn.setVisible(false);
+            
+            
+            
+            
+            managerHomePnl.showPnl("home");
+            contentView.show(Content, "managerHomePnl");
+            this.managerBtn.setVisible(true);
+        }
+        //staff
+        else if (user.getRole()== 3)
+        {
+            this.managerBtn.setVisible(false);
+            this.adminBtn.setVisible(false);
+            this.clientBtn.setVisible(false);
+            
+            
+            
+            
+            managerHomePnl.showPnl("home");
+            contentView.show(Content, "staffHomePnl");
+            this.staffBtn.setVisible(true);
+        }
+        //client
+        else
+        {
+             this.adminBtn.setVisible(false);
+            this.staffBtn.setVisible(false);
+            this.managerBtn.setVisible(false);
+            
+            clientHomePnl.showPnl("home");
+            contentView.show(Content, "clientHomePnl");
+            
+            this.clientBtn.setVisible(true);
+        }
+        
+        
     }
     
     public void showError(String error)

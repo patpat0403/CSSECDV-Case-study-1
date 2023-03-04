@@ -37,6 +37,8 @@ public class ClientHome extends javax.swing.JPanel {
         mgmtLogs = new MgmtLogs(sqlite);
         mgmtProduct = new MgmtProduct(sqlite);
         mgmtUser = new MgmtUser(sqlite);
+        
+        
     
         Content.setLayout(contentView);
         Content.add(new Home("WELCOME CLIENT!", new java.awt.Color(255,102,51)), "home");
@@ -44,6 +46,15 @@ public class ClientHome extends javax.swing.JPanel {
         Content.add(mgmtHistory, "mgmtHistory");
         Content.add(mgmtProduct, "mgmtProduct");
         Content.add(mgmtLogs, "mgmtLogs");
+        
+        this.mgmtProduct.disableButton(1);
+        this.mgmtProduct.disableButton(2);
+        this.mgmtProduct.disableButton(3);
+        
+        this.disableButton(1);
+        this.disableButton(2);
+        this.disableButton(4);
+        
         
 //        UNCOMMENT TO DISABLE BUTTONS
 //        historyBtn.setVisible(false);
@@ -191,6 +202,39 @@ public class ClientHome extends javax.swing.JPanel {
         contentView.show(Content, "mgmtLogs");
     }//GEN-LAST:event_logsBtnActionPerformed
     
+    public void disableButton(int button)
+    {
+        switch(button) {
+        case 1:
+            this.historyBtn.setVisible(false);
+            break;
+        case 2:
+            this.logsBtn.setVisible(false);
+            break;
+         case 3:
+            this.productsBtn.setVisible(false);
+            break;
+        default:
+            this.usersBtn.setVisible(false);
+        }
+    }
+    
+    public void enableButton(int button)
+    {
+        switch(button) {
+        case 1:
+            this.historyBtn.setVisible(true);
+            break;
+        case 2:
+            this.logsBtn.setVisible(true);
+            break;
+         case 3:
+            this.productsBtn.setVisible(true);
+            break;
+        default:
+            this.usersBtn.setVisible(true);
+        }
+    }
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

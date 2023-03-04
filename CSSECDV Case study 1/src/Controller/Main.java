@@ -217,4 +217,20 @@ public class Main {
           return invalid;
     }
     
+    public User getActive(String username)
+    {
+        User active= null;
+        ArrayList<User> users = sqlite.getUsers();
+        for(int nCtr = 0; nCtr < users.size(); nCtr++)
+            {
+                if(username.equalsIgnoreCase(users.get(nCtr).getUsername()))
+                     {
+                        
+                        active=users.get(nCtr);
+                     }
+            }
+        
+        return active;
+    }
+    
 }

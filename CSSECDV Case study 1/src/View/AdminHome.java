@@ -191,7 +191,39 @@ public class AdminHome extends javax.swing.JPanel {
         contentView.show(Content, "mgmtLogs");
     }//GEN-LAST:event_logsBtnActionPerformed
     
+    public void disableButton(int button)
+    {
+        switch(button) {
+        case 1:
+            this.historyBtn.setVisible(false);
+            break;
+        case 2:
+            this.logsBtn.setVisible(false);
+            break;
+         case 3:
+            this.productsBtn.setVisible(false);
+            break;
+        default:
+            this.usersBtn.setVisible(false);
+        }
+    }
     
+    public void enableButton(int button)
+    {
+        switch(button) {
+        case 1:
+            this.historyBtn.setVisible(true);
+            break;
+        case 2:
+            this.logsBtn.setVisible(true);
+            break;
+         case 3:
+            this.productsBtn.setVisible(true);
+            break;
+        default:
+            this.usersBtn.setVisible(true);
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Content;
