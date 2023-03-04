@@ -160,6 +160,12 @@ public class Main {
             return 1;
         }
         
+        else if(username.equals(""))
+        {
+            System.out.println("empty username field ");
+            return 1;
+        }
+        
         else
         {
             ArrayList<User> users = sqlite.getUsers();

@@ -6,13 +6,14 @@ public class User {
     private String password;
     private int role = 2;
     private int locked = 0;
-    // TODO: attempts here
+   
+   
 
     public User(String username, String password){
         this.username = username;
         this.password = password;
     }
-    
+    // TODO: add invalid
     public User(int id, String username, String password, int role, int locked){
         this.id = id;
         this.username = username;

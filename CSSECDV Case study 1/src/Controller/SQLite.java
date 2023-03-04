@@ -79,7 +79,7 @@ public class SQLite {
             System.out.print(ex);
         }
     }
-     
+    //add invalid 
     public void createUserTable() {
         String sql = "CREATE TABLE IF NOT EXISTS users (\n"
             + " id INTEGER PRIMARY KEY AUTOINCREMENT,\n"
@@ -259,7 +259,7 @@ public class SQLite {
         }
         return products;
     }
-    
+    //TODO: Add invalid tries
     public ArrayList<User> getUsers(){
         String sql = "SELECT id, username, password, role, locked FROM users";
         ArrayList<User> users = new ArrayList<User>();
