@@ -51,7 +51,7 @@ public class ClientHome extends javax.swing.JPanel {
         this.mgmtProduct.disableButton(2);
         this.mgmtProduct.disableButton(3);
         
-        this.disableButton(1);
+        this.mgmtHistory.disableButton(2);
         this.disableButton(2);
         this.disableButton(4);
         

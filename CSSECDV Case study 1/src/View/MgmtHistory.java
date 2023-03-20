@@ -8,6 +8,7 @@ package View;
 import Controller.SQLite;
 import Model.History;
 import Model.Product;
+import Model.User;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -21,6 +22,7 @@ public class MgmtHistory extends javax.swing.JPanel {
 
     public SQLite sqlite;
     public DefaultTableModel tableModel;
+    private User active;
     
     public MgmtHistory(SQLite sqlite) {
         initComponents();
@@ -44,9 +46,13 @@ public class MgmtHistory extends javax.swing.JPanel {
         for(int nCtr = tableModel.getRowCount(); nCtr > 0; nCtr--){
             tableModel.removeRow(0);
         }
-        
+        ArrayList<History> history  = sqlite.getHistory();
 //      LOAD CONTENTS
-        ArrayList<History> history = sqlite.getHistory();
+        if(this.active.getRole()== 2)
+        {
+            history=sqlite.getUserHistory(active.getUsername());
+        }
+        
         for(int nCtr = 0; nCtr < history.size(); nCtr++){
             Product product = sqlite.getProduct(history.get(nCtr).getName());
             tableModel.addRow(new Object[]{
@@ -79,8 +85,9 @@ public class MgmtHistory extends javax.swing.JPanel {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
-        searchBtn = new javax.swing.JButton();
+        searchUserBtn = new javax.swing.JButton();
         reloadBtn = new javax.swing.JButton();
+        SearchProductBtn = new javax.swing.JButton();
 
         table.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         table.setModel(new javax.swing.table.DefaultTableModel(
@@ -114,21 +121,27 @@ public class MgmtHistory extends javax.swing.JPanel {
             table.getColumnModel().getColumn(5).setPreferredWidth(240);
         }
 
-        searchBtn.setBackground(new java.awt.Color(255, 255, 255));
-        searchBtn.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        searchBtn.setText("SEARCH USERNAME OR PRODUCT");
-        searchBtn.addActionListener(new java.awt.event.ActionListener() {
+        searchUserBtn.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        searchUserBtn.setText("Search Username");
+        searchUserBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchBtnActionPerformed(evt);
+                searchUserBtnActionPerformed(evt);
             }
         });
 
-        reloadBtn.setBackground(new java.awt.Color(255, 255, 255));
         reloadBtn.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         reloadBtn.setText("RELOAD");
         reloadBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 reloadBtnActionPerformed(evt);
+            }
+        });
+
+        SearchProductBtn.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        SearchProductBtn.setText("Search Product");
+        SearchProductBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SearchProductBtnActionPerformed(evt);
             }
         });
 
@@ -140,27 +153,30 @@ public class MgmtHistory extends javax.swing.JPanel {
                 .addGap(0, 0, 0)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(searchBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(0, 0, 0)
+                        .addComponent(searchUserBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(SearchProductBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(reloadBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 424, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 456, Short.MAX_VALUE))
                 .addGap(0, 0, 0))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(0, 0, 0)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 222, Short.MAX_VALUE)
-                .addGap(0, 0, 0)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(searchBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
-                    .addComponent(reloadBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE, false)
+                    .addComponent(SearchProductBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(searchUserBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(reloadBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void searchBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBtnActionPerformed
+    private void searchUserBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchUserBtnActionPerformed
         JTextField searchFld = new JTextField("0");
-        designer(searchFld, "SEARCH USERNAME OR PRODUCT");
+        designer(searchFld, "SEARCH USERNAME ");
 
         Object[] message = {
             searchFld
@@ -194,17 +210,78 @@ public class MgmtHistory extends javax.swing.JPanel {
                 }
             }
         }
-    }//GEN-LAST:event_searchBtnActionPerformed
+    }//GEN-LAST:event_searchUserBtnActionPerformed
 
     private void reloadBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reloadBtnActionPerformed
         init();
     }//GEN-LAST:event_reloadBtnActionPerformed
 
+    private void SearchProductBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchProductBtnActionPerformed
+        // TODO add your handling code here:
+         JTextField searchFld = new JTextField("0");
+        designer(searchFld, "SEARCH USERNAME ");
+
+        Object[] message = {
+            searchFld
+        };
+
+        int result = JOptionPane.showConfirmDialog(null, message, "SEARCH HISTORY", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null);
+
+        if (result == JOptionPane.OK_OPTION) {
+//          CLEAR TABLE
+            for(int nCtr = tableModel.getRowCount(); nCtr > 0; nCtr--){
+                tableModel.removeRow(0);
+            }
+
+//          LOAD CONTENTS
+            ArrayList<History> history = sqlite.getHistory();
+            if(this.active.getRole()== 2)// if user is client make sure to only get products that the user has purchased
+            {
+                history=sqlite.getUserHistory(active.getUsername());
+            }
+            for(int nCtr = 0; nCtr < history.size(); nCtr++){
+                if(searchFld.getText().contains(history.get(nCtr).getUsername()) || 
+                   history.get(nCtr).getUsername().contains(searchFld.getText()) || 
+                   searchFld.getText().contains(history.get(nCtr).getName()) || 
+                   history.get(nCtr).getName().contains(searchFld.getText())){
+                
+                    Product product = sqlite.getProduct(history.get(nCtr).getName());
+                    tableModel.addRow(new Object[]{
+                        history.get(nCtr).getUsername(), 
+                        history.get(nCtr).getName(), 
+                        history.get(nCtr).getStock(), 
+                        product.getPrice(), 
+                        product.getPrice() * history.get(nCtr).getStock(), 
+                        history.get(nCtr).getTimestamp()
+                    });
+                }
+            }
+        }
+        
+    }//GEN-LAST:event_SearchProductBtnActionPerformed
+    
+    public void disableButton(int button)
+    {
+        switch(button) {
+        case 1:
+            this.SearchProductBtn.setVisible(false);
+            break;
+     
+        default:
+            this.searchUserBtn.setVisible(false);
+        }
+    }
+    
+    public void setActiveUser(User user)
+    {
+        this.active=user;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton SearchProductBtn;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton reloadBtn;
-    private javax.swing.JButton searchBtn;
+    private javax.swing.JButton searchUserBtn;
     private javax.swing.JTable table;
     // End of variables declaration//GEN-END:variables
 }

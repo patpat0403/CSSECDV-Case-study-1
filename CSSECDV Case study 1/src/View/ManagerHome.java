@@ -48,11 +48,12 @@ public class ManagerHome extends javax.swing.JPanel {
         this.disableButton(4);
         
         
+        
 //        UNCOMMENT TO DISABLE BUTTONS
 //        historyBtn.setVisible(false);
 //        usersBtn.setVisible(false);
 //        productsBtn.setVisible(false);
-//        logsBtn.setVisible(false);
+          logsBtn.setVisible(false);
     }
     
     public void showPnl(String panelName){

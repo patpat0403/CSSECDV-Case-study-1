@@ -364,6 +364,8 @@ public class Frame extends javax.swing.JFrame {
             
             managerHomePnl.showPnl("home");
             contentView.show(Content, "managerHomePnl");
+            this.managerHomePnl.mgmtHistory.setActiveUser(user);
+            this.managerHomePnl.mgmtHistory.init();
             this.managerBtn.setVisible(true);
         }
         //staff
@@ -389,6 +391,9 @@ public class Frame extends javax.swing.JFrame {
             
             clientHomePnl.showPnl("home");
             contentView.show(Content, "clientHomePnl");
+            
+            this.clientHomePnl.mgmtHistory.setActiveUser(user);
+            this.clientHomePnl.mgmtHistory.init();
             
             this.clientBtn.setVisible(true);
         }

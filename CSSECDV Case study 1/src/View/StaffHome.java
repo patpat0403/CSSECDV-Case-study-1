@@ -47,6 +47,9 @@ public class StaffHome extends javax.swing.JPanel {
         
         this.disableButton(4);
         this.disableButton(2);
+        this.disableButton(1);
+        
+        this.mgmtProduct.disableButton(4);
         
 //        UNCOMMENT TO DISABLE BUTTONS
 //        historyBtn.setVisible(false);
