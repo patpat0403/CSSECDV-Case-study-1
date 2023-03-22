@@ -28,6 +28,7 @@ public class MgmtProduct extends javax.swing.JPanel {
     public DefaultTableModel tableModel;
     public User active;
     private static final Pattern QTY_pattern = Pattern.compile("^[1-9]\\d*$");
+    private static final Pattern price_pattern= Pattern.compile("^(\\d)+(\\.\\d{1,2})*$");
     private static final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss.SSS"); 
     
     
@@ -226,7 +227,7 @@ public class MgmtProduct extends javax.swing.JPanel {
                     
                     else
                     {
-                        JOptionPane.showMessageDialog(null,"invalid amount");  
+                        JOptionPane.showMessageDialog(null,"quantity not enough for value entered");  
                     }
                     
                     
@@ -242,6 +243,7 @@ public class MgmtProduct extends javax.swing.JPanel {
     }//GEN-LAST:event_purchaseBtnActionPerformed
 
     private void addBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addBtnActionPerformed
+        int valid=1;// variable to check if product is valid
         JTextField nameFld = new JTextField();
         JTextField stockFld = new JTextField();
         JTextField priceFld = new JTextField();
@@ -260,6 +262,47 @@ public class MgmtProduct extends javax.swing.JPanel {
             System.out.println(nameFld.getText());
             System.out.println(stockFld.getText());
             System.out.println(priceFld.getText());
+            
+            ArrayList<Product> products = sqlite.getProduct();
+            
+            //check if item name exists
+            for(int nCtr = 0; nCtr < products.size(); nCtr++){
+            
+                if (products.get(nCtr).getName().equalsIgnoreCase(nameFld.getText()))
+                {
+                    valid = 0;
+                }
+                
+             }
+            
+            //check if valid integer
+            
+            if (!QTY_pattern.matcher(stockFld.getText()).matches())
+            {
+                valid = 0;
+            }
+            
+            // check if valid price 
+            if (!price_pattern.matcher(priceFld.getText()).matches())
+            {
+                valid =0;
+            }
+            
+            
+            if(valid==1)
+            { //TODO add code for adding products 
+                System.out.println(nameFld.getText());
+                System.out.println(stockFld.getText());
+                System.out.println(priceFld.getText());
+                
+            }
+            
+            else
+            {
+                JOptionPane.showMessageDialog(null,"invalid inputs");  
+            }
+            
+            
         }
     }//GEN-LAST:event_addBtnActionPerformed
 
