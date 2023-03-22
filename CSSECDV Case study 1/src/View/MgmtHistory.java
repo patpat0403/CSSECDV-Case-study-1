@@ -220,7 +220,7 @@ public class MgmtHistory extends javax.swing.JPanel {
 
     private void SearchProductBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchProductBtnActionPerformed
         // TODO add your handling code here:
-         JTextField searchFld = new JTextField("0");
+         JTextField searchFld = new JTextField("");
         designer(searchFld, "SEARCH Product ");
 
         Object[] message = {
@@ -245,7 +245,8 @@ public class MgmtHistory extends javax.swing.JPanel {
                 if(searchFld.getText().contains(history.get(nCtr).getUsername()) || 
                    history.get(nCtr).getUsername().contains(searchFld.getText()) || 
                    searchFld.getText().contains(history.get(nCtr).getName()) || 
-                   history.get(nCtr).getName().contains(searchFld.getText())){
+                   history.get(nCtr).getName().contains(searchFld.getText()) ||
+                   searchFld.getText().equalsIgnoreCase(history.get(nCtr).getName())){
                 
                     Product product = sqlite.getProduct(history.get(nCtr).getName());
                     tableModel.addRow(new Object[]{
