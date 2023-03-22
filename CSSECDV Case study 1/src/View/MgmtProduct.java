@@ -7,12 +7,17 @@ package View;
 
 import Controller.SQLite;
 import Model.Product;
+import Model.User;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
-
+import java.util.regex.*;
+import java.sql.Timestamp;
+import java.util.Date;
+import java.time.format.DateTimeFormatter;  
+import java.time.LocalDateTime;    
 /**
  *
  * @author beepxD
@@ -21,6 +26,10 @@ public class MgmtProduct extends javax.swing.JPanel {
 
     public SQLite sqlite;
     public DefaultTableModel tableModel;
+    public User active;
+    private static final Pattern QTY_pattern = Pattern.compile("^[1-9]\\d*$");
+    private static final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss.SSS"); 
+    
     
     public MgmtProduct(SQLite sqlite) {
         initComponents();
@@ -45,9 +54,12 @@ public class MgmtProduct extends javax.swing.JPanel {
         ArrayList<Product> products = sqlite.getProduct();
         for(int nCtr = 0; nCtr < products.size(); nCtr++){
             tableModel.addRow(new Object[]{
+               
                 products.get(nCtr).getName(), 
                 products.get(nCtr).getStock(), 
-                products.get(nCtr).getPrice()});
+                products.get(nCtr).getPrice(),
+                products.get(nCtr).getId()
+            });
         }
     }
     
@@ -174,6 +186,9 @@ public class MgmtProduct extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void purchaseBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_purchaseBtnActionPerformed
+        
+        int qty;
+        
         if(table.getSelectedRow() >= 0){
             JTextField stockFld = new JTextField("0");
             designer(stockFld, "PRODUCT STOCK");
@@ -185,7 +200,43 @@ public class MgmtProduct extends javax.swing.JPanel {
             int result = JOptionPane.showConfirmDialog(null, message, "PURCHASE PRODUCT", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null);
 
             if (result == JOptionPane.OK_OPTION) {
-                System.out.println(stockFld.getText());
+               
+                
+                if(QTY_pattern.matcher(stockFld.getText()).matches()) //check if valid format (positive integer)
+                {
+                    qty = Integer.parseInt(stockFld.getText());
+                    
+                    if (qty<= Integer.parseInt(tableModel.getValueAt(table.getSelectedRow(), 1).toString()) )
+                    {
+                        sqlite.deductQty(tableModel.getValueAt(table.getSelectedRow(), 0).toString(), qty);
+                        
+                        JOptionPane.showMessageDialog(null,"purchase successful");
+                        LocalDateTime now = LocalDateTime.now();  
+                        //System.out.println(this.active.getUsername());
+                        //System.out.println(tableModel.getValueAt(table.getSelectedRow(), 0).toString());
+                        //System.out.println(qty);
+                        //System.out.println(dtf.format(now));
+                        
+                        sqlite.addHistory(this.active.getUsername(), tableModel.getValueAt(table.getSelectedRow(), 0).toString() , qty, dtf.format(now));
+                        this.init();
+                        
+                        
+                        
+                    }
+                    
+                    else
+                    {
+                        JOptionPane.showMessageDialog(null,"invalid amount");  
+                    }
+                    
+                    
+                }
+                
+                else
+                {
+                     System.out.println("invalid format");
+                     JOptionPane.showMessageDialog(null,"invalid amount");  
+                }
             }
         }
     }//GEN-LAST:event_purchaseBtnActionPerformed
@@ -280,6 +331,12 @@ public class MgmtProduct extends javax.swing.JPanel {
         default:
             this.purchaseBtn.setVisible(true);
         }
+    }
+    
+    
+     public void setActiveUser(User user)
+    {
+        this.active=user;
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addBtn;

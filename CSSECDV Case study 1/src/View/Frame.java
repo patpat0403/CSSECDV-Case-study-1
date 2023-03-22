@@ -343,7 +343,8 @@ public class Frame extends javax.swing.JFrame {
             this.clientBtn.setVisible(false);
             
             
-           
+           this.adminHomePnl.mgmtUser.setActiveUser(user);
+           this.adminHomePnl.mgmtLogs.setActiveUser(user);
            
             adminHomePnl.showPnl("home");
             contentView.show(Content, "adminHomePnl");
@@ -365,7 +366,9 @@ public class Frame extends javax.swing.JFrame {
             managerHomePnl.showPnl("home");
             contentView.show(Content, "managerHomePnl");
             
+            this.managerHomePnl.mgmtProduct.setActiveUser(user);
             this.managerHomePnl.mgmtHistory.setActiveUser(user);
+            
             this.managerHomePnl.mgmtHistory.init();
             
             this.managerBtn.setVisible(true);
@@ -378,7 +381,7 @@ public class Frame extends javax.swing.JFrame {
             this.clientBtn.setVisible(false);
             
             
-            
+            this.staffHomePnl.mgmtProduct.setActiveUser(user);
             
             managerHomePnl.showPnl("home");
             contentView.show(Content, "staffHomePnl");
@@ -394,7 +397,8 @@ public class Frame extends javax.swing.JFrame {
             clientHomePnl.showPnl("home");
             contentView.show(Content, "clientHomePnl");
             
-            this.clientHomePnl.mgmtHistory.setActiveUser(user);
+            this.clientHomePnl.mgmtProduct.setActiveUser(user); //set active for product
+            this.clientHomePnl.mgmtHistory.setActiveUser(user); //set active for history
             this.clientHomePnl.mgmtHistory.init();
             
             this.clientBtn.setVisible(true);

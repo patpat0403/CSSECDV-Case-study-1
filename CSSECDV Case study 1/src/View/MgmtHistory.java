@@ -45,12 +45,14 @@ public class MgmtHistory extends javax.swing.JPanel {
 //      CLEAR TABLE
         for(int nCtr = tableModel.getRowCount(); nCtr > 0; nCtr--){
             tableModel.removeRow(0);
+            
         }
         ArrayList<History> history  = sqlite.getHistory();
 //      LOAD CONTENTS
         if(this.active.getRole()== 2)
         {
             history=sqlite.getUserHistory(active.getUsername());
+            
         }
         
         for(int nCtr = 0; nCtr < history.size(); nCtr++){
@@ -219,7 +221,7 @@ public class MgmtHistory extends javax.swing.JPanel {
     private void SearchProductBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SearchProductBtnActionPerformed
         // TODO add your handling code here:
          JTextField searchFld = new JTextField("0");
-        designer(searchFld, "SEARCH USERNAME ");
+        designer(searchFld, "SEARCH Product ");
 
         Object[] message = {
             searchFld

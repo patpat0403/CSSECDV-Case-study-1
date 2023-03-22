@@ -24,6 +24,7 @@ public class MgmtUser extends javax.swing.JPanel {
 
     public SQLite sqlite;
     public DefaultTableModel tableModel;
+    public User active;
     
     public MgmtUser(SQLite sqlite) {
         initComponents();
@@ -249,7 +250,10 @@ public class MgmtUser extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_chgpassBtnActionPerformed
 
-
+     public void setActiveUser(User user)
+    {
+        this.active=user;
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton chgpassBtn;
     private javax.swing.JButton deleteBtn;

@@ -37,14 +37,14 @@ public class Main {
  //      sqlite.dropUserTable();
 //        
 //        // Create users table if not exist
-//        sqlite.createHistoryTable();
+ //       sqlite.createHistoryTable();
 //        sqlite.createLogsTable();
 //        sqlite.createProductTable();
  //     sqlite.createUserTable();
 //        
 //        // Add sample history
-//        sqlite.addHistory("admin", "Antivirus", 1, "2019-04-03 14:30:00.000");
-//        sqlite.addHistory("manager", "Firewall", 1, "2019-04-03 14:30:01.000");
+  //       sqlite.addHistory("client1", "Antivirus", 1, "2019-04-03 14:30:00.000");
+  //      sqlite.addHistory("client1", "Firewall", 1, "2019-04-03 14:30:01.000");
 //        sqlite.addHistory("staff", "Scanner", 1, "2019-04-03 14:30:02.000");
 //        
        
