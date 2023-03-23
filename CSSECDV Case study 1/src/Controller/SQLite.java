@@ -374,5 +374,21 @@ public class SQLite {
             System.out.print(ex);
         }
        }
+       
+      
+       
+       public void editProduct(int id, String prodName, int qty, float price)
+       {
+           
+           String sql = "UPDATE product " + "SET stock = '"+ qty + "'," + "name = '"+ prodName + "' ,"+ "price = '"+ price + "' " + "WHERE id = '" + id + "' ;";
+           
+           try (Connection conn = DriverManager.getConnection(driverURL);
+            Statement stmt = conn.createStatement()){
+            stmt.execute(sql);
+            
+        } catch (Exception ex) {
+            System.out.print(ex);
+        }
+       }
     
 }

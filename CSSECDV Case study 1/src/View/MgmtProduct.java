@@ -30,7 +30,7 @@ public class MgmtProduct extends javax.swing.JPanel {
     private static final Pattern QTY_pattern = Pattern.compile("^[1-9]\\d*$");
     private static final Pattern price_pattern= Pattern.compile("^(\\d)+(\\.\\d{1,2})*$");
     private static final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss.SSS"); 
-    
+    private static final Pattern prodName_pattern= Pattern.compile("^[a-zA-Z0-9\\s\\_\\-]+$");
     
     public MgmtProduct(SQLite sqlite) {
         initComponents();
@@ -259,9 +259,7 @@ public class MgmtProduct extends javax.swing.JPanel {
         int result = JOptionPane.showConfirmDialog(null, message, "ADD PRODUCT", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null);
 
         if (result == JOptionPane.OK_OPTION) {
-            System.out.println(nameFld.getText());
-            System.out.println(stockFld.getText());
-            System.out.println(priceFld.getText());
+            
             
             ArrayList<Product> products = sqlite.getProduct();
             
@@ -287,6 +285,11 @@ public class MgmtProduct extends javax.swing.JPanel {
             {
                 valid =0;
             }
+            // check if valid product name (whitelisting )
+            if (!prodName_pattern.matcher(nameFld.getText()).matches())
+            {
+                valid =0;
+            }
             
             
             if(valid==1)
@@ -294,6 +297,13 @@ public class MgmtProduct extends javax.swing.JPanel {
                 System.out.println(nameFld.getText());
                 System.out.println(stockFld.getText());
                 System.out.println(priceFld.getText());
+                
+             
+                sqlite.addProduct(nameFld.getText(), Integer.parseInt(stockFld.getText()) , Float.parseFloat(priceFld.getText()) );
+                JOptionPane.showMessageDialog(null,nameFld.getText() + " successfully added");
+                this.init();
+                
+                // add logging here
                 
             }
             
@@ -307,6 +317,9 @@ public class MgmtProduct extends javax.swing.JPanel {
     }//GEN-LAST:event_addBtnActionPerformed
 
     private void editBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editBtnActionPerformed
+        
+         int valid=1;// variable to check if product is valid
+         
         if(table.getSelectedRow() >= 0){
             JTextField nameFld = new JTextField(tableModel.getValueAt(table.getSelectedRow(), 0) + "");
             JTextField stockFld = new JTextField(tableModel.getValueAt(table.getSelectedRow(), 1) + "");
@@ -323,10 +336,61 @@ public class MgmtProduct extends javax.swing.JPanel {
             int result = JOptionPane.showConfirmDialog(null, message, "EDIT PRODUCT", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null);
 
             if (result == JOptionPane.OK_OPTION) {
+                
+                
+                 ArrayList<Product> products = sqlite.getProduct();
+                 
+                 //check if valid integer
+            
+            if (!QTY_pattern.matcher(stockFld.getText()).matches())
+            {
+                valid = 0;
+            }
+            
+            // check if valid price 
+            if (!price_pattern.matcher(priceFld.getText()).matches())
+            {
+                valid =0;
+            }
+            // check if valid product name (whitelisting )
+            if (!prodName_pattern.matcher(nameFld.getText()).matches())
+            {
+                valid =0;
+            }
+            
+            if(valid==1)
+            { //TODO add code for adding products 
                 System.out.println(nameFld.getText());
                 System.out.println(stockFld.getText());
                 System.out.println(priceFld.getText());
+                
+             
+                int id=0;
+                
+                for(int nCtr = 0; nCtr < products.size(); nCtr++){
+            
+                if (products.get(nCtr).getName().equalsIgnoreCase(tableModel.getValueAt(table.getSelectedRow(), 0).toString())) // check if username exists in the list
+                    {
+                        id = products.get(nCtr).getId(); // if exists get the product id to be used for editing the product
+                    }
+                
+                }
+                
+                 System.out.println(id);
+                 sqlite.editProduct(id, nameFld.getText(),Integer.parseInt(stockFld.getText()) , Float.parseFloat(priceFld.getText()));
+                JOptionPane.showMessageDialog(null,  " successfully edited item");
+                this.init();
+                
+                // add logging here
+                
             }
+            
+            else
+            {
+                JOptionPane.showMessageDialog(null,"invalid inputs");  
+            }
+            
+           }
         }
     }//GEN-LAST:event_editBtnActionPerformed
 
