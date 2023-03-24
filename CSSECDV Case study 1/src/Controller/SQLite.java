@@ -32,8 +32,11 @@ public class SQLite {
             + " id INTEGER PRIMARY KEY AUTOINCREMENT,\n"
             + " username TEXT NOT NULL,\n"
             + " name TEXT NOT NULL,\n"
+            + " price REAL DEFAULT 0.0,\n"
             + " stock INTEGER DEFAULT 0,\n"
+            + " total Real DEFAULT 0,\n"  
             + " timestamp TEXT NOT NULL\n"
+            
             + ");";
 
         try (Connection conn = DriverManager.getConnection(driverURL);
@@ -146,8 +149,8 @@ public class SQLite {
         }
     }
     
-    public void addHistory(String username, String name, int stock, String timestamp) {
-        String sql = "INSERT INTO history(username,name,stock,timestamp) VALUES('" + username + "','" + name + "','" + stock + "','" + timestamp + "')";
+    public void addHistory(String username, String name, int stock,float price, float total, String timestamp) {
+        String sql = "INSERT INTO history(username,name,stock,price,total,timestamp) VALUES('" + username + "','" + name + "','" + stock + "','" + price + "','" + total + "','" + timestamp + "')";
         
         try (Connection conn = DriverManager.getConnection(driverURL);
             Statement stmt = conn.createStatement()){
@@ -199,7 +202,7 @@ public class SQLite {
     
     
     public ArrayList<History> getHistory(){
-        String sql = "SELECT id, username, name, stock, timestamp FROM history";
+        String sql = "SELECT id, username, name, stock, timestamp, price, total FROM history";
         ArrayList<History> histories = new ArrayList<History>();
         
         try (Connection conn = DriverManager.getConnection(driverURL);
@@ -211,6 +214,8 @@ public class SQLite {
                                    rs.getString("username"),
                                    rs.getString("name"),
                                    rs.getInt("stock"),
+                                   rs.getFloat("price"),
+                                   rs.getFloat("total"),
                                    rs.getString("timestamp")));
             }
         } catch (Exception ex) {
@@ -219,7 +224,7 @@ public class SQLite {
         return histories;
     }
     public ArrayList<History> getUserHistory(String username){
-        String sql = "SELECT id, username, name, stock, timestamp FROM history WHERE username='" + username + "'";
+        String sql = "SELECT id, username, name, stock, timestamp, price, total FROM history WHERE username='" + username + "'";
         ArrayList<History> histories = new ArrayList<History>();
         
         try (Connection conn = DriverManager.getConnection(driverURL);
@@ -231,6 +236,8 @@ public class SQLite {
                                    rs.getString("username"),
                                    rs.getString("name"),
                                    rs.getInt("stock"),
+                                   rs.getFloat("price"),
+                                   rs.getFloat("total"),
                                    rs.getString("timestamp")));
             }
         } catch (Exception ex) {

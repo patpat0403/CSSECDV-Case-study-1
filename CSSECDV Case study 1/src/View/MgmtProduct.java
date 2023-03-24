@@ -189,7 +189,7 @@ public class MgmtProduct extends javax.swing.JPanel {
     private void purchaseBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_purchaseBtnActionPerformed
         
         int qty;
-        
+        float price;
         if(table.getSelectedRow() >= 0){
             JTextField stockFld = new JTextField("0");
             designer(stockFld, "PRODUCT STOCK");
@@ -206,6 +206,7 @@ public class MgmtProduct extends javax.swing.JPanel {
                 if(QTY_pattern.matcher(stockFld.getText()).matches()) //check if valid format (positive integer)
                 {
                     qty = Integer.parseInt(stockFld.getText());
+                    price = Float.parseFloat(tableModel.getValueAt(table.getSelectedRow(), 2).toString());
                     
                     if (qty<= Integer.parseInt(tableModel.getValueAt(table.getSelectedRow(), 1).toString()) )
                     {
@@ -218,7 +219,7 @@ public class MgmtProduct extends javax.swing.JPanel {
                         //System.out.println(qty);
                         //System.out.println(dtf.format(now));
                         
-                        sqlite.addHistory(this.active.getUsername(), tableModel.getValueAt(table.getSelectedRow(), 0).toString() , qty, dtf.format(now));
+                        sqlite.addHistory(this.active.getUsername(), tableModel.getValueAt(table.getSelectedRow(), 0).toString() , qty,price ,qty*price, dtf.format(now));
                         this.init();
                         
                         
