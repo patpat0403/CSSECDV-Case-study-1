@@ -3,12 +3,16 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Von/CSSECDV/CSSECDV-Case-study-1/CSSECDV%20Case%20study%201/src/Controller/Main.java</file>
-            <file>file:/C:/Users/Von/CSSECDV/CSSECDV-Case-study-1/CSSECDV%20Case%20study%201/src/View/Register.java</file>
-            <file>file:/C:/Users/Von/CSSECDV/CSSECDV-Case-study-1/CSSECDV%20Case%20study%201/src/View/MgmtProduct.java</file>
-            <file>file:/C:/Users/Von/CSSECDV/CSSECDV-Case-study-1/CSSECDV%20Case%20study%201/src/Model/Logs.java</file>
-            <file>file:/C:/Users/Von/CSSECDV/CSSECDV-Case-study-1/CSSECDV%20Case%20study%201/src/Controller/SQLite.java</file>
-            <file>file:/C:/Users/Von/CSSECDV/CSSECDV-Case-study-1/CSSECDV%20Case%20study%201/src/View/Frame.java</file>
+            <file>file:/C:/Dlsu%20stuff/CSSECDV/CSSECDV%20Case%20study%201/src/View/Frame.java</file>
+            <file>file:/C:/Dlsu%20stuff/CSSECDV/CSSECDV%20Case%20study%201/src/View/MgmtHistory.java</file>
+            <file>file:/C:/Dlsu%20stuff/CSSECDV/CSSECDV%20Case%20study%201/src/View/MgmtUser.java</file>
+            <file>file:/C:/Dlsu%20stuff/CSSECDV/CSSECDV%20Case%20study%201/src/Controller/Main.java</file>
+            <file>file:/C:/Dlsu%20stuff/CSSECDV/CSSECDV%20Case%20study%201/src/Model/Product.java</file>
+            <file>file:/C:/Dlsu%20stuff/CSSECDV/CSSECDV%20Case%20study%201/src/Controller/SQLite.java</file>
+            <file>file:/C:/Dlsu%20stuff/CSSECDV/CSSECDV%20Case%20study%201/src/Model/History.java</file>
+            <file>file:/C:/Dlsu%20stuff/CSSECDV/CSSECDV%20Case%20study%201/src/Model/Logs.java</file>
+            <file>file:/C:/Dlsu%20stuff/CSSECDV/CSSECDV%20Case%20study%201/src/View/ManagerHome.java</file>
+            <file>file:/C:/Dlsu%20stuff/CSSECDV/CSSECDV%20Case%20study%201/src/View/MgmtProduct.java</file>
         </group>
     </open-files>
 </project-private>

@@ -46,7 +46,7 @@ public class ManagerHome extends javax.swing.JPanel {
         Content.add(mgmtLogs, "mgmtLogs");
         
         this.disableButton(4);
-        
+        this.mgmtProduct.disableButton(4);
         
         
 //        UNCOMMENT TO DISABLE BUTTONS
