@@ -7,8 +7,14 @@ import java.awt.CardLayout;
 import java.awt.Dimension;
 import javax.swing.WindowConstants;
 import javax.swing.JOptionPane;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Frame extends javax.swing.JFrame {
+    
+    private Date thisDate = new Date();
+    private SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+    
     
     public int invalidAttempts=0;
     public User activeUser= null;
@@ -282,6 +288,7 @@ public class Frame extends javax.swing.JFrame {
         {
             //TODO add the hashing function for the password
             main.sqlite.addUser(username.getText().toLowerCase(), main.generateHashedPassword(password.getText()),2);
+            main.sqlite.addLogs("NOTICE", username.getText(), "User creation successful", dateformat.format(thisDate));
             username.setText("");
             password.setText("");
             confpass.setText("");

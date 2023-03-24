@@ -17,7 +17,7 @@ import java.util.regex.*;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.time.format.DateTimeFormatter;  
-import java.time.LocalDateTime;    
+import java.time.LocalDateTime;
 /**
  *
  * @author beepxD
@@ -31,6 +31,7 @@ public class MgmtProduct extends javax.swing.JPanel {
     private static final Pattern price_pattern= Pattern.compile("^(\\d)+(\\.\\d{1,2})*$");
     private static final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss.SSS"); 
     private static final Pattern prodName_pattern= Pattern.compile("^[a-zA-Z0-9\\s\\_\\-]+$");
+
     
     public MgmtProduct(SQLite sqlite) {
         initComponents();
@@ -304,8 +305,9 @@ public class MgmtProduct extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(null,nameFld.getText() + " successfully added");
                 this.init();
                 
+                LocalDateTime now = LocalDateTime.now();  
                 // add logging here
-                
+                sqlite.addLogs("NOTICE", this.active.getUsername(), "Added a new product", dtf.format(now));
             }
             
             else
@@ -383,7 +385,8 @@ public class MgmtProduct extends javax.swing.JPanel {
                 this.init();
                 
                 // add logging here
-                
+                LocalDateTime now = LocalDateTime.now();
+                sqlite.addLogs("NOTICE", this.active.getUsername(), "Edited product details", dtf.format(now));
             }
             
             else
@@ -401,10 +404,13 @@ public class MgmtProduct extends javax.swing.JPanel {
             
             if (result == JOptionPane.YES_OPTION) {
                 System.out.println(tableModel.getValueAt(table.getSelectedRow(), 0));
-                
+              
                 sqlite.removeProduct(tableModel.getValueAt(table.getSelectedRow(), 0).toString());
-                JOptionPane.showMessageDialog(null,tableModel.getValueAt(table.getSelectedRow(), 0).toString()+ "deleted");
+                JOptionPane.showMessageDialog(null,tableModel.getValueAt(table.getSelectedRow(), 0).toString()+ " deleted");
                 this.init();
+                
+                LocalDateTime now = LocalDateTime.now();
+                sqlite.addLogs("NOTICE", this.active.getUsername(), "Deleted a product", dtf.format(now));
             }
         }
     }//GEN-LAST:event_deleteBtnActionPerformed
