@@ -315,6 +315,7 @@ public class Frame extends javax.swing.JFrame {
             //TODO add the hashing function for the password
             main.sqlite.addUser(username.getText().toLowerCase(), main.generateHashedPassword(password.getText()),2);
             main.sqlite.addLogs("NOTICE", username.getText(), "User creation successful", dateformat.format(thisDate));
+            JOptionPane.showMessageDialog(null,"User successfully registered");
             username.setText("");
             password.setText("");
             confpass.setText("");

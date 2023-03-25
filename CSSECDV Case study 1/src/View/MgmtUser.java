@@ -7,6 +7,9 @@ package View;
 
 import Controller.SQLite;
 import Model.User;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -16,6 +19,9 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import java.time.format.DateTimeFormatter;  
+import java.time.LocalDateTime;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.time.LocalDateTime;
 
 /**
@@ -28,6 +34,7 @@ public class MgmtUser extends javax.swing.JPanel {
     public DefaultTableModel tableModel;
     private User active;
     private static final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss.SSS"); 
+    private static final Pattern password_pattern= Pattern.compile( "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{11,64}$");
     
     public MgmtUser(SQLite sqlite) {
         initComponents();
@@ -212,12 +219,12 @@ public class MgmtUser extends javax.swing.JPanel {
                 
                 
                
-                
+                 LocalDateTime now = LocalDateTime.now();  
                 
                 
                 
                     sqlite.editUserRole(tableModel.getValueAt(table.getSelectedRow(), 0).toString(),result.charAt(0)-'0' );
-                    
+                    sqlite.addLogs("NOTICE", this.active.getUsername(), "Edited a User role", dtf.format(now));
                     JOptionPane.showMessageDialog(null,"Edit role successful");
                     this.init();
                     
@@ -235,12 +242,12 @@ public class MgmtUser extends javax.swing.JPanel {
         
         if (this.active.getUsername().equalsIgnoreCase(tableModel.getValueAt(table.getSelectedRow(), 0).toString()))// if the same with active user
                 {
-                    JOptionPane.showMessageDialog(null,"You cannot edit your own role"); 
+                    JOptionPane.showMessageDialog(null,"You cannot delete your own account"); 
                 }
          
         else if (Integer.parseInt(tableModel.getValueAt(table.getSelectedRow(), 2).toString())== 5)// if user being edited is an admin
                 {
-                    JOptionPane.showMessageDialog(null,"You cannot edit this user's role"); 
+                    JOptionPane.showMessageDialog(null,"You cannot delete this user"); 
                 }
         
         else if(table.getSelectedRow() >= 0){
@@ -248,7 +255,10 @@ public class MgmtUser extends javax.swing.JPanel {
             
             if (result == JOptionPane.YES_OPTION) {
                 System.out.println(tableModel.getValueAt(table.getSelectedRow(), 0));
+                LocalDateTime now = LocalDateTime.now(); 
+                
                 this.sqlite.removeUser(tableModel.getValueAt(table.getSelectedRow(), 0).toString());
+                sqlite.addLogs("NOTICE", this.active.getUsername(), "deleted a user", dtf.format(now));
                 this.init();
                 JOptionPane.showMessageDialog(null,"User successfully deleted"); 
                
@@ -259,12 +269,12 @@ public class MgmtUser extends javax.swing.JPanel {
     private void lockBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lockBtnActionPerformed
         if (this.active.getUsername().equalsIgnoreCase(tableModel.getValueAt(table.getSelectedRow(), 0).toString()))// if the same with active user
                 {
-                    JOptionPane.showMessageDialog(null,"You cannot edit your own role"); 
+                    JOptionPane.showMessageDialog(null,"You cannot lock your account"); 
                 }
          
         else if (Integer.parseInt(tableModel.getValueAt(table.getSelectedRow(), 2).toString())== 5)// if user being edited is an admin
                 {
-                    JOptionPane.showMessageDialog(null,"You cannot edit this user's role"); 
+                    JOptionPane.showMessageDialog(null,"You cannot lock this user"); 
                 }
         
         else if(table.getSelectedRow() >= 0){
@@ -277,14 +287,21 @@ public class MgmtUser extends javax.swing.JPanel {
             
             if (result == JOptionPane.YES_OPTION) {
                 System.out.println( state + " " + tableModel.getValueAt(table.getSelectedRow(), 0)  );
-                
+                LocalDateTime now = LocalDateTime.now();
                 if(state.equals("unlock"))
                 {
+                    JOptionPane.showMessageDialog(null," user unlocked successfully"); 
                     this.sqlite.unlockUser(tableModel.getValueAt(table.getSelectedRow(), 0).toString());
+                    sqlite.addLogs("NOTICE", this.active.getUsername(), "unlocked a user", dtf.format(now));
                 }
                 
                 else
+                {
+                     JOptionPane.showMessageDialog(null," user locked successfully"); 
                     this.sqlite.lockUser(tableModel.getValueAt(table.getSelectedRow(), 0).toString());
+                    sqlite.addLogs("NOTICE", this.active.getUsername(), "locked a user", dtf.format(now));
+                }
+                    
                 
                 this.init();
             }
@@ -292,7 +309,17 @@ public class MgmtUser extends javax.swing.JPanel {
     }//GEN-LAST:event_lockBtnActionPerformed
 
     private void chgpassBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chgpassBtnActionPerformed
-        if(table.getSelectedRow() >= 0){
+         if (this.active.getUsername().equalsIgnoreCase(tableModel.getValueAt(table.getSelectedRow(), 0).toString()))// if the same with active user
+                {
+                    JOptionPane.showMessageDialog(null,"You cannot change your own password"); 
+                }
+         
+        else if (Integer.parseInt(tableModel.getValueAt(table.getSelectedRow(), 2).toString())== 5)// if user being edited is an admin
+                {
+                    JOptionPane.showMessageDialog(null,"You cannot change this user's password"); 
+                }
+        
+        else if(table.getSelectedRow() >= 0){
             JTextField password = new JPasswordField();
             JTextField confpass = new JPasswordField();
             designer(password, "PASSWORD");
@@ -307,13 +334,67 @@ public class MgmtUser extends javax.swing.JPanel {
             if (result == JOptionPane.OK_OPTION) {
                 System.out.println(password.getText());
                 System.out.println(confpass.getText());
+                
+                if(!(password.getText().equals(confpass.getText())))// not matching confirm password
+                {
+                    JOptionPane.showMessageDialog(null,"Password is not matching"); 
+                }
+                
+                else if (!passMatcher(password.getText())||!passMatcher(confpass.getText()))// validates password fields by checking if it matches complexity
+                {
+                    JOptionPane.showMessageDialog(null,"Password is too simple, pls follow password guidelines"); 
+                }
+                else if (this.generateHashedPassword(password.getText()).equals(tableModel.getValueAt(table.getSelectedRow(), 1).toString()))
+                {
+                    JOptionPane.showMessageDialog(null,"Password is the same as old one");
+                }
+                else
+                {
+                    LocalDateTime now = LocalDateTime.now();
+                    
+                    sqlite.editUserPassword(tableModel.getValueAt(table.getSelectedRow(), 0).toString(),this.generateHashedPassword(password.getText()) );
+                    sqlite.addLogs("NOTICE", this.active.getUsername(), "edited a user password", dtf.format(now));
+                     this.init();
+                    JOptionPane.showMessageDialog(null,"Password changed successfully"); 
+                   
+                }
+                    
             }
         }
     }//GEN-LAST:event_chgpassBtnActionPerformed
+    
+    public String generateHashedPassword(String password)
+    {
+        String generatedPassword= null;
+        try {
+                MessageDigest md = MessageDigest.getInstance("SHA-512");
+                md.update(password.getBytes());
 
+                byte[] hashedPassword = md.digest(password.getBytes(StandardCharsets.UTF_8));
+
+                
+                StringBuilder s = new StringBuilder();
+                for (int i = 0; i < hashedPassword.length; i++) {
+                    s.append(Integer.toString((hashedPassword[i] & 0xff) + 0x100, 16).substring(1));
+                }
+
+                generatedPassword = s.toString();
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            }
+        
+        return generatedPassword;
+    }
      public void setActiveUser(User user)
     {
         this.active=user;
+    }
+     
+     public boolean passMatcher(String password)
+    {
+        Matcher matcher= password_pattern.matcher(password);
+        
+        return matcher.matches();
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton chgpassBtn;
