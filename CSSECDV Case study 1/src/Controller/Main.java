@@ -59,9 +59,9 @@ public class Main {
 //        sqlite.addProduct("Scanner", 10, 100.0);
 //
 //        // Add sample users
- //     sqlite.addUser("admin", this.generateHashedPassword("qwerty1234") , 5);
- //     sqlite.addUser("manager", this.generateHashedPassword("qwerty1234"), 4);
- //       sqlite.addUser("staff", this.generateHashedPassword("qwerty1234"), 3);
+ //        sqlite.addUser("LMAO", this.generateHashedPassword("qwerty1234") , 5);
+ //      sqlite.addUser("manager2", this.generateHashedPassword("qwerty1234"), 4);
+ //      sqlite.addUser("staff2", this.generateHashedPassword("qwerty1234"), 3);
  //    sqlite.addUser("client1", this.generateHashedPassword("qwerty1234"), 2);
  //      sqlite.addUser("client2", this.generateHashedPassword("qwerty1234"), 2);
 //        

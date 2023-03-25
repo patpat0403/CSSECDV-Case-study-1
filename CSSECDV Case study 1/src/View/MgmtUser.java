@@ -15,6 +15,8 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import java.time.format.DateTimeFormatter;  
+import java.time.LocalDateTime;
 
 /**
  *
@@ -24,7 +26,8 @@ public class MgmtUser extends javax.swing.JPanel {
 
     public SQLite sqlite;
     public DefaultTableModel tableModel;
-    public User active;
+    private User active;
+    private static final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss.SSS"); 
     
     public MgmtUser(SQLite sqlite) {
         initComponents();
@@ -180,35 +183,91 @@ public class MgmtUser extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void editRoleBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editRoleBtnActionPerformed
-        if(table.getSelectedRow() >= 0){
-            String[] options = {"1-DISABLED","2-CLIENT","3-STAFF","4-MANAGER","5-ADMIN"};
+        
+        
+         if (this.active.getUsername().equalsIgnoreCase(tableModel.getValueAt(table.getSelectedRow(), 0).toString()))// if the same with active user
+                {
+                    JOptionPane.showMessageDialog(null,"You cannot edit your own role"); 
+                }
+         
+         else if (Integer.parseInt(tableModel.getValueAt(table.getSelectedRow(), 2).toString())== 5)// if user being edited is an admin
+                {
+                    JOptionPane.showMessageDialog(null,"You cannot edit this user's role"); 
+                }
+         
+        else if(table.getSelectedRow() >= 0)
+        {
+            String[] options = {"1-DISABLED" ,"2-CLIENT","3-STAFF","4-MANAGER","5-ADMIN"};
             JComboBox optionList = new JComboBox(options);
             
             optionList.setSelectedIndex((int)tableModel.getValueAt(table.getSelectedRow(), 2) - 1);
             
-            String result = (String) JOptionPane.showInputDialog(null, "USER: " + tableModel.getValueAt(table.getSelectedRow(), 0), 
+            
+            String result = (String) JOptionPane.showInputDialog(null, "USER: " + tableModel.getValueAt(table.getSelectedRow(), 0).toString(), 
                 "EDIT USER ROLE", JOptionPane.QUESTION_MESSAGE, null, options, options[(int)tableModel.getValueAt(table.getSelectedRow(), 2) - 1]);
             
             if(result != null){
                 System.out.println(tableModel.getValueAt(table.getSelectedRow(), 0));
                 System.out.println(result.charAt(0));
+                
+                
+               
+                
+                
+                
+                
+                    sqlite.editUserRole(tableModel.getValueAt(table.getSelectedRow(), 0).toString(),result.charAt(0)-'0' );
+                    
+                    JOptionPane.showMessageDialog(null,"Edit role successful");
+                    this.init();
+                    
+                
+                
+               
+                
+                
+                
             }
         }
     }//GEN-LAST:event_editRoleBtnActionPerformed
 
     private void deleteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteBtnActionPerformed
-        if(table.getSelectedRow() >= 0){
+        
+        if (this.active.getUsername().equalsIgnoreCase(tableModel.getValueAt(table.getSelectedRow(), 0).toString()))// if the same with active user
+                {
+                    JOptionPane.showMessageDialog(null,"You cannot edit your own role"); 
+                }
+         
+        else if (Integer.parseInt(tableModel.getValueAt(table.getSelectedRow(), 2).toString())== 5)// if user being edited is an admin
+                {
+                    JOptionPane.showMessageDialog(null,"You cannot edit this user's role"); 
+                }
+        
+        else if(table.getSelectedRow() >= 0){
             int result = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete " + tableModel.getValueAt(table.getSelectedRow(), 0) + "?", "DELETE USER", JOptionPane.YES_NO_OPTION);
             
             if (result == JOptionPane.YES_OPTION) {
                 System.out.println(tableModel.getValueAt(table.getSelectedRow(), 0));
                 this.sqlite.removeUser(tableModel.getValueAt(table.getSelectedRow(), 0).toString());
+                this.init();
+                JOptionPane.showMessageDialog(null,"User successfully deleted"); 
+               
             }
         }
     }//GEN-LAST:event_deleteBtnActionPerformed
 
     private void lockBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lockBtnActionPerformed
-        if(table.getSelectedRow() >= 0){
+        if (this.active.getUsername().equalsIgnoreCase(tableModel.getValueAt(table.getSelectedRow(), 0).toString()))// if the same with active user
+                {
+                    JOptionPane.showMessageDialog(null,"You cannot edit your own role"); 
+                }
+         
+        else if (Integer.parseInt(tableModel.getValueAt(table.getSelectedRow(), 2).toString())== 5)// if user being edited is an admin
+                {
+                    JOptionPane.showMessageDialog(null,"You cannot edit this user's role"); 
+                }
+        
+        else if(table.getSelectedRow() >= 0){
             String state = "lock";
             if("1".equals(tableModel.getValueAt(table.getSelectedRow(), 3) + "")){
                 state = "unlock";
@@ -226,6 +285,8 @@ public class MgmtUser extends javax.swing.JPanel {
                 
                 else
                     this.sqlite.lockUser(tableModel.getValueAt(table.getSelectedRow(), 0).toString());
+                
+                this.init();
             }
         }
     }//GEN-LAST:event_lockBtnActionPerformed

@@ -213,6 +213,32 @@ public class Frame extends javax.swing.JFrame {
     private void logoutBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutBtnActionPerformed
         frameView.show(Container, "loginPnl");
         //TODO: remove panels depending on the role of the user
+        if (this.activeUser.getRole()==2)
+        {
+            this.clientHomePnl.mgmtProduct.setActiveUser(null); //set active for product
+            this.clientHomePnl.mgmtHistory.setActiveUser(null); //set active for history
+            
+        }
+        
+        else if (this.activeUser.getRole()==3)
+        {
+            
+            this.staffHomePnl.mgmtProduct.setActiveUser(null);
+        }
+        
+        else if (this.activeUser.getRole()==4)
+        {
+            this.managerHomePnl.mgmtProduct.setActiveUser(null);
+            this.managerHomePnl.mgmtHistory.setActiveUser(null);
+            
+           
+        }
+        
+        else
+        {
+            this.adminHomePnl.mgmtUser.setActiveUser(null);
+           this.adminHomePnl.mgmtLogs.setActiveUser(null);
+        }
         this.activeUser= null;
         
     }//GEN-LAST:event_logoutBtnActionPerformed
